@@ -211,8 +211,14 @@ uint32_t getAccountTypeAndId(struct sedContext *sedCtx, struct userInfo *user)
 
         if ((strlen(user->userName) == strlen(name)) && (strncmp(user->userName, name, strlen(user->userName)) == 0))
         {
-            if (reverseOffsetLookUp(offset, &user->accountType, &user->id))
+            SedAccounts accountType = user->accountType;
+            uint8_t id = user->id;
+
+            if (reverseOffsetLookUp(offset, &accountType, &id))
                 return sedError;
+
+            user->accountType = accountType;
+            user->id = id;
 
             return 0;
         }
